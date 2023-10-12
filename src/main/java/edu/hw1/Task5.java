@@ -16,8 +16,11 @@ public final class Task5 {
         if (number < 0) {
             throw new IllegalArgumentException("Number can't be negative");
         }
+        if (number < RADIX) {
+            return true;
+        }
         int currentDescendant = number;
-        while (currentDescendant >= RADIX) {
+        while (currentDescendant > RADIX) {
             if (isNumberPalindrome(currentDescendant)) {
                 return true;
             }
@@ -26,7 +29,7 @@ public final class Task5 {
             }
             currentDescendant = formNextDescendant(currentDescendant);
         }
-        return isNumberPalindrome(currentDescendant);
+        return false;
     }
 
     private static boolean isNumberPalindrome(int number) {

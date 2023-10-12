@@ -70,21 +70,21 @@ public class TestTask5 {
         // when
         isPalindromeDescendant = Task5.isPalindromeDescendant(number);
         // then
-        assertThat(isPalindromeDescendant).isTrue();
+        assertThat(isPalindromeDescendant).isFalse();
 
         // given
         number = 1324;
         // when
         isPalindromeDescendant = Task5.isPalindromeDescendant(number);
         // then
-        assertThat(isPalindromeDescendant).isTrue();
+        assertThat(isPalindromeDescendant).isFalse();
 
         // given
         number = 23;
         // when
         isPalindromeDescendant = Task5.isPalindromeDescendant(number);
         // then
-        assertThat(isPalindromeDescendant).isTrue();
+        assertThat(isPalindromeDescendant).isFalse();
 
         // given
         number = 0;
