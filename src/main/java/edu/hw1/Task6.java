@@ -12,6 +12,7 @@ public final class Task6 {
     private final static int UPPER_BOUND = 9999;
     private final static int NUMBER_OF_DIGITS = 4;
     private final static int KAPREKARS_ROUTINE = 6174;
+    private final static int MAXIMUM_NUMBER_OF_STEPS = 7;
 
     private Task6() {
     }
@@ -29,7 +30,11 @@ public final class Task6 {
         int numberWithIncreasingDigits = constructNumberWithIncreasingDigits(digitsOfNumber);
         int numberWithDecreasingDigits = constructNumberWithDecreasingDigits(digitsOfNumber);
         if (numberWithIncreasingDigits != numberWithDecreasingDigits) {
-            return countK(numberWithDecreasingDigits - numberWithIncreasingDigits) + 1;
+            int numberOfSteps = countK(numberWithDecreasingDigits - numberWithIncreasingDigits) + 1;
+            if (numberOfSteps > MAXIMUM_NUMBER_OF_STEPS) {
+                throw new IllegalStateException("Reached maximum number of steps");
+            }
+            return numberOfSteps;
         }
         throw new IllegalArgumentException("Digits in number can't be the same");
     }

@@ -43,6 +43,13 @@ public class TestTask6 {
         k = Task6.countK(number);
         // then
         assertThat(k).isEqualTo(0);
+
+        // given
+        number = 2005;
+        // when
+        k = Task6.countK(number);
+        // then
+        assertThat(k).isEqualTo(7);
     }
 
     @Test
