@@ -7,6 +7,7 @@ public final class Task5 {
     private final static Logger LOGGER = LogManager.getLogger();
 
     private final static int RADIX = 10;
+    private final static int RADIX_SQUARED = RADIX * RADIX;
 
     private Task5() {
     }
@@ -47,16 +48,16 @@ public final class Task5 {
         int descendantRemainder = currentDescendant;
         int reversedNextDescendant = 0;
         while (descendantRemainder > 0) {
-            int lastTwoDigits = descendantRemainder % (RADIX * RADIX);
+            int lastTwoDigits = descendantRemainder % (RADIX_SQUARED);
             int sumOfLastTwoDigits = lastTwoDigits / RADIX + lastTwoDigits % RADIX;
             if (sumOfLastTwoDigits >= RADIX) {
-                reversedNextDescendant *= RADIX * RADIX;
+                reversedNextDescendant *= RADIX_SQUARED;
                 reversedNextDescendant += (sumOfLastTwoDigits % RADIX) * RADIX + (sumOfLastTwoDigits / RADIX);
             } else {
                 reversedNextDescendant *= RADIX;
                 reversedNextDescendant += sumOfLastTwoDigits;
             }
-            descendantRemainder /= (RADIX * RADIX);
+            descendantRemainder /= (RADIX_SQUARED);
         }
         int nextDescendant = reverseNumber(reversedNextDescendant);
         LOGGER.trace("The next descendant for {} is {}", currentDescendant, nextDescendant);
