@@ -14,11 +14,11 @@ public final class Task1 {
     private Task1() {
     }
 
-    public static int getVideoLengthInSeconds(String formattedVideoLengthString) {
-        Objects.requireNonNull(formattedVideoLengthString);
-        LOGGER.trace("Processing a string {}", formattedVideoLengthString);
+    public static int getVideoLengthInSeconds(String videoLength) {
+        Objects.requireNonNull(videoLength);
+        LOGGER.trace("Processing a string {}", videoLength);
         Pattern pattern = Pattern.compile("^(\\d{2,}):([0-5][0-9])$");
-        Matcher matcher = pattern.matcher(formattedVideoLengthString);
+        Matcher matcher = pattern.matcher(videoLength);
         if (!matcher.matches()) {
             return -1;
         }

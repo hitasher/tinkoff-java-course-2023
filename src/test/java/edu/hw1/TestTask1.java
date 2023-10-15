@@ -10,30 +10,30 @@ public class TestTask1 {
     @DisplayName("Получение длины видео в секундах из строки, соответствующей шаблону")
     void testGetVideoLengthInSeconds() {
         // given
-        String formattedVideoLengthString = "01:00";
+        String videoLength = "01:00";
         // when
-        int videoLengthInSeconds = Task1.getVideoLengthInSeconds(formattedVideoLengthString);
+        int videoLengthInSeconds = Task1.getVideoLengthInSeconds(videoLength);
         // then
         assertThat(videoLengthInSeconds).isEqualTo(60);
 
         // given
-        formattedVideoLengthString = "13:56";
+        videoLength = "13:56";
         // when
-        videoLengthInSeconds = Task1.getVideoLengthInSeconds(formattedVideoLengthString);
+        videoLengthInSeconds = Task1.getVideoLengthInSeconds(videoLength);
         // then
         assertThat(videoLengthInSeconds).isEqualTo(836);
 
         // given
-        formattedVideoLengthString = "999:59";
+        videoLength = "999:59";
         // when
-        videoLengthInSeconds = Task1.getVideoLengthInSeconds(formattedVideoLengthString);
+        videoLengthInSeconds = Task1.getVideoLengthInSeconds(videoLength);
         // then
         assertThat(videoLengthInSeconds).isEqualTo(59999);
 
         // given
-        formattedVideoLengthString = "00:00";
+        videoLength = "00:00";
         // when
-        videoLengthInSeconds = Task1.getVideoLengthInSeconds(formattedVideoLengthString);
+        videoLengthInSeconds = Task1.getVideoLengthInSeconds(videoLength);
         // then
         assertThat(videoLengthInSeconds).isEqualTo(0);
     }
