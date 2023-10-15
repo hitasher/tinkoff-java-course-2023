@@ -1,83 +1,69 @@
 package edu.hw1;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class TestTask1 {
+
     @Test
-    @DisplayName("Получение длины видео в секундах из строки, соответствующей шаблону")
-    void testGetVideoLengthInSeconds() {
+    void getVideoLengthInSeconds_ShouldReturn60() {
         // given
         String videoLength = "01:00";
         // when
         int videoLengthInSeconds = Task1.getVideoLengthInSeconds(videoLength);
         // then
         assertThat(videoLengthInSeconds).isEqualTo(60);
+    }
 
+    @Test
+    void getVideoLengthInSeconds_ShouldReturn836() {
         // given
-        videoLength = "13:56";
+        String videoLength = "13:56";
         // when
-        videoLengthInSeconds = Task1.getVideoLengthInSeconds(videoLength);
+        int videoLengthInSeconds = Task1.getVideoLengthInSeconds(videoLength);
         // then
         assertThat(videoLengthInSeconds).isEqualTo(836);
+    }
 
+    @Test
+    void getVideoLengthInSeconds_ShouldReturn59999() {
         // given
-        videoLength = "999:59";
+        String videoLength = "999:59";
         // when
-        videoLengthInSeconds = Task1.getVideoLengthInSeconds(videoLength);
+        int videoLengthInSeconds = Task1.getVideoLengthInSeconds(videoLength);
         // then
         assertThat(videoLengthInSeconds).isEqualTo(59999);
+    }
 
-        // given
-        videoLength = "00:00";
+    @ParameterizedTest
+    @ValueSource(strings = {"00:00", "000:00", "0000:00"})
+    void getVideoLengthInSeconds_ShouldReturn0(String videoLength) {
         // when
-        videoLengthInSeconds = Task1.getVideoLengthInSeconds(videoLength);
+        int videoLengthInSeconds = Task1.getVideoLengthInSeconds(videoLength);
         // then
         assertThat(videoLengthInSeconds).isEqualTo(0);
     }
 
-    @Test
-    @DisplayName("Получение длины видео в секундах из строки, несоответствующей шаблону")
-    void testGetVideoLengthInSecondsWithInvalidArguments() {
-        // given
-        String formattedVideoLengthString = "10:60";
+    @ParameterizedTest
+    @EmptySource
+    @ValueSource(strings = {"10:60", "01:0", "1:00", "1:00", "59"})
+    void getVideoLengthInSeconds_ShouldReturnMinusOne(String string) {
         // when
-        int videoLengthInSeconds = Task1.getVideoLengthInSeconds(formattedVideoLengthString);
+        int videoLengthInSeconds = Task1.getVideoLengthInSeconds(string);
         // then
         assertThat(videoLengthInSeconds).isEqualTo(-1);
+    }
 
-        // given
-        formattedVideoLengthString = "01:0";
-        // when
-        videoLengthInSeconds = Task1.getVideoLengthInSeconds(formattedVideoLengthString);
-        // then
-        assertThat(videoLengthInSeconds).isEqualTo(-1);
-
-        // given
-        formattedVideoLengthString = "1:00";
-        // when
-        videoLengthInSeconds = Task1.getVideoLengthInSeconds(formattedVideoLengthString);
-        // then
-        assertThat(videoLengthInSeconds).isEqualTo(-1);
-
-        // given
-        formattedVideoLengthString = "59";
-        // when
-        videoLengthInSeconds = Task1.getVideoLengthInSeconds(formattedVideoLengthString);
-        // then
-        assertThat(videoLengthInSeconds).isEqualTo(-1);
-
-        // given
-        formattedVideoLengthString = "";
-        // when
-        videoLengthInSeconds = Task1.getVideoLengthInSeconds(formattedVideoLengthString);
-        // then
-        assertThat(videoLengthInSeconds).isEqualTo(-1);
-
+    @ParameterizedTest
+    @NullSource
+    void getVideoLengthInSeconds_ShouldThrowNullPointerException(String string) {
         assertThatThrownBy(
-            () -> Task1.getVideoLengthInSeconds(null)
+            () -> Task1.getVideoLengthInSeconds(string)
         ).isInstanceOf(NullPointerException.class);
     }
 }

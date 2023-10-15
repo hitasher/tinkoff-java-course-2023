@@ -1,55 +1,68 @@
 package edu.hw1;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class TestTask4 {
+
     @Test
-    @DisplayName("Исправление строки")
-    void testFixString() {
+    void fixString_ShouldReturn123456() {
         // given
-        String string = "123456";
+        String string = "214365";
         // when
         String fixedString = Task4.fixString(string);
         // then
-        assertThat(fixedString).isEqualTo("214365");
+        assertThat(fixedString).isEqualTo("123456");
+    }
 
+    @Test
+    void fixString_ShouldReturnThisIsAMixedUpString() {
         // given
-        string = "hTsii  s aimex dpus rtni.g";
+        String string = "hTsii  s aimex dpus rtni.g";
         // when
-        fixedString = Task4.fixString(string);
+        String fixedString = Task4.fixString(string);
         // then
         assertThat(fixedString).isEqualTo("This is a mixed up string.");
+    }
 
+    @Test
+    void fixString_ShouldReturn98765() {
         // given
-        string = "badce";
+        String string = "89675";
         // when
-        fixedString = Task4.fixString(string);
+        String fixedString = Task4.fixString(string);
         // then
-        assertThat(fixedString).isEqualTo("abcde");
+        assertThat(fixedString).isEqualTo("98765");
+    }
 
+    @Test
+    void fixString_ShouldReturnEmptyString() {
         // given
-        string = "";
+        String string = "";
         // when
-        fixedString = Task4.fixString(string);
+        String fixedString = Task4.fixString(string);
         // then
         assertThat(fixedString).isEqualTo("");
+    }
 
+    @Test
+    void fixString_ShouldReturnA() {
         // given
-        string = "a";
+        String string = "a";
         // when
-        fixedString = Task4.fixString(string);
+        String fixedString = Task4.fixString(string);
         // then
         assertThat(fixedString).isEqualTo("a");
     }
 
-    @Test
-    @DisplayName("Вызов метода при некорректных аргументах")
-    void testFixStringWithInvalidArguments() {
+    @ParameterizedTest
+    @NullSource
+    void fixString_ShouldThrowNullPointerException(String string) {
         assertThatThrownBy(
-            () -> Task4.fixString(null)
+            () -> Task4.fixString(string)
         ).isInstanceOf(NullPointerException.class);
     }
 }

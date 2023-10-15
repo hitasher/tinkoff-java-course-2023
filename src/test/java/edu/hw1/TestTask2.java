@@ -1,53 +1,53 @@
 package edu.hw1;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class TestTask2 {
-    @Test
-    @DisplayName("Подсчёт количества цифр в числе")
-    void testCountDigitsInNumber() {
-        // given
-        int number = 0;
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, -1, 7, -9})
+    void countDigitsInNumber_ShouldReturn1(int number) {
         // when
         int digitsInNumber = Task2.countDigitsInNumber(number);
         // then
         assertThat(digitsInNumber).isEqualTo(1);
+    }
 
-        // given
-        number = 7;
+    @ParameterizedTest
+    @ValueSource(ints = {16, -27, 99, -82})
+    void countDigitsInNumber_ShouldReturn2(int number) {
         // when
-        digitsInNumber = Task2.countDigitsInNumber(number);
+        int digitsInNumber = Task2.countDigitsInNumber(number);
         // then
-        assertThat(digitsInNumber).isEqualTo(1);
+        assertThat(digitsInNumber).isEqualTo(2);
+    }
 
-        // given
-        number = -9;
+    @ParameterizedTest
+    @ValueSource(ints = {544, 112, -404})
+    void countDigitsInNumber_ShouldReturn3(int number) {
         // when
-        digitsInNumber = Task2.countDigitsInNumber(number);
-        // then
-        assertThat(digitsInNumber).isEqualTo(1);
-
-        // given
-        number = 544;
-        // when
-        digitsInNumber = Task2.countDigitsInNumber(number);
+        int digitsInNumber = Task2.countDigitsInNumber(number);
         // then
         assertThat(digitsInNumber).isEqualTo(3);
+    }
 
-        // given
-        number = -404;
+    @ParameterizedTest
+    @ValueSource(ints = {4666, 6174, -8642})
+    void countDigitsInNumber_ShouldReturn4(int number) {
         // when
-        digitsInNumber = Task2.countDigitsInNumber(number);
+        int digitsInNumber = Task2.countDigitsInNumber(number);
         // then
-        assertThat(digitsInNumber).isEqualTo(3);
-
-        // given
-        number = 4666;
-        // when
-        digitsInNumber = Task2.countDigitsInNumber(number);
-        // the
         assertThat(digitsInNumber).isEqualTo(4);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1_000_000_000, -2_000_000_000})
+    void countDigitsInNumber_ShouldReturn10(int number) {
+        // when
+        int digitsInNumber = Task2.countDigitsInNumber(number);
+        // then
+        assertThat(digitsInNumber).isEqualTo(10);
     }
 }
