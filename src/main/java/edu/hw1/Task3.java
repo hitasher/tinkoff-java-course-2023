@@ -2,7 +2,6 @@ package edu.hw1;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.OptionalInt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,11 +18,17 @@ public final class Task3 {
             throw new IllegalArgumentException("Arrays can't be empty");
         }
         LOGGER.trace("Processing arrays {} and {}", arr1, arr2);
-        OptionalInt arr1Min = Arrays.stream(arr1).min();
-        OptionalInt arr2Min = Arrays.stream(arr2).min();
-        OptionalInt arr1Max = Arrays.stream(arr1).max();
-        OptionalInt arr2Max = Arrays.stream(arr2).max();
-
-        return arr1Min.getAsInt() > arr2Min.getAsInt() && arr1Max.getAsInt() < arr2Max.getAsInt();
+        return minInArray(arr1) > minInArray(arr2) && maxInArray(arr1) < maxInArray(arr2);
     }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    private static int minInArray(int[] array) {
+        return Arrays.stream(array).min().getAsInt();
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    private static int maxInArray(int[] array) {
+        return Arrays.stream(array).max().getAsInt();
+    }
+
 }
