@@ -71,7 +71,7 @@ public class TestTask7 {
     }
 
     @ParameterizedTest
-    @CsvSource({"-1, 2", "-43, -4"})
+    @CsvSource({"-1, 2", "-43, -4", "0, -1298", "0, 0", "0, 43"})
     void rotateLeft_ShouldThrowIllegalArgumentException(int number, int shift) {
         assertThatThrownBy(
             () -> Task7.rotateLeft(number, shift)
@@ -79,7 +79,7 @@ public class TestTask7 {
     }
 
     @ParameterizedTest
-    @CsvSource({"-3, -7", "-382, 21"})
+    @CsvSource({"-3, -7", "-382, 21", "0, -21", "0, 0", "0, 312"})
     void rotateRight_ShouldThrowIllegalArgumentException(int number, int shift) {
         assertThatThrownBy(
             () -> Task7.rotateRight(number, shift)
