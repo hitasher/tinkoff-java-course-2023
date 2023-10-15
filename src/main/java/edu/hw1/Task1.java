@@ -10,6 +10,7 @@ public final class Task1 {
     private final static Logger LOGGER = LogManager.getLogger();
 
     private final static int SECONDS_PER_MINUTE = 60;
+    private final static Pattern PATTERN = Pattern.compile("^(\\d{2,}):([0-5][0-9])$");
 
     private Task1() {
     }
@@ -17,8 +18,7 @@ public final class Task1 {
     public static int getVideoLengthInSeconds(String videoLength) {
         Objects.requireNonNull(videoLength);
         LOGGER.trace("Processing a string {}", videoLength);
-        Pattern pattern = Pattern.compile("^(\\d{2,}):([0-5][0-9])$");
-        Matcher matcher = pattern.matcher(videoLength);
+        Matcher matcher = PATTERN.matcher(videoLength);
         if (!matcher.matches()) {
             return -1;
         }
