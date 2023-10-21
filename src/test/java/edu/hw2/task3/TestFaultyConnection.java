@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class TestFaultyConnection {
     @Test
     void testExecute_ShouldNotThrowAnyExceptions() {
-        FaultyConnection faultyConnection = new FaultyConnection(0);;
+        FaultyConnection faultyConnection = new FaultyConnection(0);
         assertDoesNotThrow(() -> faultyConnection.execute(""));
         faultyConnection.close();
     }

@@ -42,10 +42,8 @@ public class TestPopularCommandExecutor {
     @ParameterizedTest
     @ValueSource(ints = {0, -1, -101})
     void testTryExecute_ShouldThrowIllegalArgumentException(int maxNumberOfAttempts) {
-        assertThatThrownBy(() -> {
-            PopularCommandExecutor commandExecutor = new PopularCommandExecutor(
-                new FaultyConnectionManager(), maxNumberOfAttempts
-            );
-        }).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(
+            () -> new PopularCommandExecutor(new FaultyConnectionManager(), maxNumberOfAttempts)
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 }
