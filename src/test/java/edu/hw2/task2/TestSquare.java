@@ -20,7 +20,7 @@ public class TestSquare {
         assertThat(square.getArea()).isEqualTo(4);
     }
 
-    private static Stream<Arguments> testSetSizeLength() {
+    private static Stream<Arguments> testSetSize() {
         return Stream.of(
             Arguments.of(new Square(3)),
             Arguments.of(new Square(1))
@@ -30,8 +30,8 @@ public class TestSquare {
 
     @ParameterizedTest
     @MethodSource
-    void testSetSizeLength(Square square) {
-        square = square.setSizeLength(5);
+    void testSetSize(Square square) {
+        square = square.setSize(5);
         assertThat(square.getArea()).isEqualTo(25);
     }
 }
