@@ -1,8 +1,11 @@
 package edu.hw3;
 
+import java.util.Map;
+import java.util.TreeMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import static java.util.Map.entry;
 
 public final class Task4 {
     private final static Logger LOGGER = LogManager.getLogger();
@@ -10,10 +13,21 @@ public final class Task4 {
     private final static int MINIMUM_ROMAN_NUMBER = 1;
     private final static int MAXIMUM_ROMAN_NUMBER = 3999;
 
-
-    private final static int[] VALUES = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-    private final static String[] ROMAN_STRINGS =
-        {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+    private final static TreeMap<Integer, String> VALUE_TO_ROMAN_STRING = new TreeMap<>(Map.ofEntries(
+        entry(1000, "M"),
+        entry(900, "CM"),
+        entry(500, "D"),
+        entry(400, "CD"),
+        entry(100, "C"),
+        entry(90, "XC"),
+        entry(50, "L"),
+        entry(40, "XL"),
+        entry(10, "X"),
+        entry(9, "IX"),
+        entry(5, "V"),
+        entry(4, "IV"),
+        entry(1, "I")
+    ));
 
     private Task4() {
     }
@@ -26,10 +40,12 @@ public final class Task4 {
         }
         int numberRemainder = number;
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < VALUES.length; ++i) {
-            while (numberRemainder >= VALUES[i]) {
-                numberRemainder -= VALUES[i];
-                stringBuilder.append(ROMAN_STRINGS[i]);
+        for (Map.Entry<Integer, String> entry : VALUE_TO_ROMAN_STRING.descendingMap().entrySet()) {
+            int value = entry.getKey();
+            String romanString = entry.getValue();
+            while (numberRemainder >= value) {
+                numberRemainder -= value;
+                stringBuilder.append(romanString);
             }
         }
         return stringBuilder.toString();
