@@ -10,14 +10,14 @@ public final class Task1 {
     private Task1() {
     }
 
-    public static String atbash(String string) {
+    public static String encryptViaAtbash(String string) {
         Objects.requireNonNull(string);
-        LOGGER.trace("Encoding string {} using atbash", string);
-        StringBuilder encodedStringBuilder = new StringBuilder();
+        LOGGER.trace("Encrypting string {} via atbash", string);
+        StringBuilder encryptedStringBuilder = new StringBuilder();
         for (int i = 0; i < string.length(); ++i) {
-            encodedStringBuilder.append(getMirrorLetter(string.charAt(i)));
+            encryptedStringBuilder.append(getMirrorLetter(string.charAt(i)));
         }
-        return encodedStringBuilder.toString();
+        return encryptedStringBuilder.toString();
     }
 
     private static char getMirrorLetter(char letter) {

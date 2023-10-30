@@ -10,7 +10,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class TestTask1 {
-    private static Stream<Arguments> atbash_ShouldReturnEncodedString() {
+    private static Stream<Arguments> encryptViaAtbash_ShouldReturnEncodedString() {
         return Stream.of(
             Arguments.of("abc|zyx", "zyx|abc"),
             Arguments.of("Hello world!", "Svool dliow!"),
@@ -24,27 +24,27 @@ public class TestTask1 {
 
     @ParameterizedTest
     @MethodSource
-    void atbash_ShouldReturnEncodedString(String originalString, String expectedEncodedString) {
+    void encryptViaAtbash_ShouldReturnEncodedString(String originalString, String expectedEncryptedString) {
         // when
-        String actualEncodedString = Task1.atbash(originalString);
+        String actualEncryptedString = Task1.encryptViaAtbash(originalString);
         // then
-        assertThat(actualEncodedString).isEqualTo(expectedEncodedString);
+        assertThat(actualEncryptedString).isEqualTo(expectedEncryptedString);
     }
 
     @ParameterizedTest
     @EmptySource
-    void atbash_ShouldReturnEmptyEncodedString(String string) {
+    void encryptViaAtbash_ShouldReturnEmptyEncodedString(String string) {
         // when
-        String encodedString = Task1.atbash(string);
+        String encryptedString = Task1.encryptViaAtbash(string);
         // then
-        assertThat(encodedString.isEmpty()).isTrue();
+        assertThat(encryptedString.isEmpty()).isTrue();
     }
 
     @ParameterizedTest
     @NullSource
-    void atbash_ShouldThrowNullPointerException(String string) {
+    void encryptViaAtbash_ShouldThrowNullPointerException(String string) {
         assertThatThrownBy(
-            () -> Task1.atbash(string)
+            () -> Task1.encryptViaAtbash(string)
         ).isInstanceOf(NullPointerException.class);
     }
 }
