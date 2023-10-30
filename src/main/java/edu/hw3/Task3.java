@@ -14,7 +14,8 @@ public final class Task3 {
     private Task3() {
     }
 
-    public static <T> @NotNull Map<T, Integer> getCounter(List<T> list) {
+    @NotNull
+    public static <T> Map<T, Integer> getCounter(List<T> list) {
         Objects.requireNonNull(list);
         LOGGER.trace("Creating counter from {}", list);
         final Map<T, Integer> counter = new HashMap<>();

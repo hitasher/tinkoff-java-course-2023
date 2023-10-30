@@ -16,7 +16,8 @@ public final class Task2 {
     private Task2() {
     }
 
-    public static @NotNull List<String> clusterizeBrackets(String bracketSequence) {
+    @NotNull
+    public static List<String> clusterizeBrackets(String bracketSequence) {
         Objects.requireNonNull(bracketSequence);
         LOGGER.trace("Clusterizing brackets in {}", bracketSequence);
         final List<String> clusters = new ArrayList<>();

@@ -18,7 +18,8 @@ public final class Task4 {
     private Task4() {
     }
 
-    public static @NotNull String integerToRoman(int number) {
+    @NotNull
+    public static String integerToRoman(int number) {
         LOGGER.trace("Converting {} to roman number", number);
         if (number < MINIMUM_ROMAN_NUMBER || number > MAXIMUM_ROMAN_NUMBER) {
             throw new IllegalArgumentException("Provided number must be in range [1, 3999]");
