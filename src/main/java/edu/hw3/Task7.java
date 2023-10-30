@@ -7,9 +7,7 @@ public final class Task7 {
     private Task7() {
     }
 
-    public static TreeMap<String, String> getTreeMapWithNullKey() {
-        TreeMap<String, String> treeMap = new TreeMap<>(Comparator.nullsFirst(Comparator.naturalOrder()));
-        treeMap.put(null, "test");
-        return treeMap;
+    public static TreeMap<String, String> getNullableTreeMap() {
+        return new TreeMap<>(Comparator.nullsFirst(Comparator.naturalOrder()));
     }
 }
