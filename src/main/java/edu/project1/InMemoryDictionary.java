@@ -17,7 +17,8 @@ public class InMemoryDictionary implements Dictionary {
     };
 
     @Override
-    public @NotNull String getRandomWord() {
+    @NotNull
+    public String getRandomWord() {
         Random random = new Random();
         int randomIndex = random.nextInt(WORDS.length);
         return WORDS[randomIndex];

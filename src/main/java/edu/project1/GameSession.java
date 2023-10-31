@@ -19,7 +19,8 @@ public class GameSession {
         usedAttempts = 0;
     }
 
-    public @NotNull GuessResult guess(char guess) {
+    @NotNull
+    public GuessResult guess(char guess) {
         if (isNotValidLetter(guess)) {
             return new GuessResult.InvalidGuess(wordBoard, usedAttempts, maxAttempts);
         }
@@ -29,7 +30,8 @@ public class GameSession {
         return openGuess(guess);
     }
 
-    public @NotNull GuessResult giveUp() {
+    @NotNull
+    public GuessResult giveUp() {
         return new GuessResult.Defeat(wordBoard, usedAttempts, maxAttempts);
     }
 
@@ -41,7 +43,8 @@ public class GameSession {
         return guess < 'a' || guess > 'z';
     }
 
-    private @NotNull GuessResult openGuess(char guess) {
+    @NotNull
+    private GuessResult openGuess(char guess) {
         if (wordBoard.isNotLetterInHiddenWord(guess)) {
             ++usedAttempts;
             if (usedAttempts == maxAttempts) {
