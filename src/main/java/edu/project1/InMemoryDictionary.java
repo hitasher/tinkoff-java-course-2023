@@ -21,6 +21,8 @@ public class InMemoryDictionary implements Dictionary {
     public String getRandomWord() {
         Random random = new Random();
         int randomIndex = random.nextInt(WORDS.length);
-        return WORDS[randomIndex];
+        String word = WORDS[randomIndex];
+        this.validateHiddenWord(word);
+        return word;
     }
 }

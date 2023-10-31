@@ -11,8 +11,8 @@ public class ConsoleHangman {
     @SuppressWarnings("checkstyle:RegexpSinglelineJava")
     public void run() {
         Dictionary dictionary = new InMemoryDictionary();
-        String hiddenWord = dictionary.getRandomWord();
-        GameSession gameSession = new GameSession(hiddenWord, MAXIMUM_NUMBER_OF_ATTEMPTS);
+        GameSession gameSession = new GameSession(dictionary, MAXIMUM_NUMBER_OF_ATTEMPTS);
+        String hiddenWord = gameSession.getHiddenWord();
         GuessResult guessResult = null;
 
         System.out.println("The hangman game starts, guess the word by entering single lowercase english letters.");

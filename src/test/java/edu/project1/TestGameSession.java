@@ -12,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 public class TestGameSession {
     private static Stream<Arguments> guess_ShouldReturnInvalidGuess() {
         return Stream.of(
-            Arguments.of(new GameSession("pig", 1), 'A'),
-            Arguments.of(new GameSession("cow", 4), 'б'),
-            Arguments.of(new GameSession("cat", 3), '0'),
-            Arguments.of(new GameSession("dog", 2), 'B'),
-            Arguments.of(new GameSession("pig", 5), 'а')  // русская а
+            Arguments.of(new GameSession(new OneWordDictionary("pig"), 1), 'A'),
+            Arguments.of(new GameSession(new OneWordDictionary("cow"), 4), 'б'),
+            Arguments.of(new GameSession(new OneWordDictionary("cat"), 3), '0'),
+            Arguments.of(new GameSession(new OneWordDictionary("dog"), 2), 'B'),
+            Arguments.of(new GameSession(new OneWordDictionary("pig"), 5), 'а')  // русская а
         );
     }
 
@@ -28,9 +28,9 @@ public class TestGameSession {
 
     private static Stream<Arguments> guess_ShouldReturnAlreadyOpenedGuess() {
         return Stream.of(
-            Arguments.of(new GameSession("camel", 1), 'm'),
-            Arguments.of(new GameSession("bull", 2), 'u'),
-            Arguments.of(new GameSession("bat", 4), 't')
+            Arguments.of(new GameSession(new OneWordDictionary("camel"), 1), 'm'),
+            Arguments.of(new GameSession(new OneWordDictionary("bull"), 2), 'u'),
+            Arguments.of(new GameSession(new OneWordDictionary("bat"), 4), 't')
         );
     }
 
@@ -43,9 +43,9 @@ public class TestGameSession {
 
     private static Stream<Arguments> guess_ShouldReturnDefeat() {
         return Stream.of(
-            Arguments.of(new GameSession("wolf", 4)),
-            Arguments.of(new GameSession("goat", 3)),
-            Arguments.of(new GameSession("bear", 2))
+            Arguments.of(new GameSession(new OneWordDictionary("wolf"), 4)),
+            Arguments.of(new GameSession(new OneWordDictionary("goat"), 3)),
+            Arguments.of(new GameSession(new OneWordDictionary("bear"), 2))
         );
     }
 
@@ -60,8 +60,8 @@ public class TestGameSession {
 
     private static Stream<Arguments> guess_ShouldReturnFailedGuess() {
         return Stream.of(
-            Arguments.of(new GameSession("lion", 4)),
-            Arguments.of(new GameSession("hippopotamus", 3))
+            Arguments.of(new GameSession(new OneWordDictionary("lion"), 4)),
+            Arguments.of(new GameSession(new OneWordDictionary("hippopotamus"), 3))
         );
     }
 
@@ -73,8 +73,8 @@ public class TestGameSession {
 
     private static Stream<Arguments> guess_ShouldReturnWin() {
         return Stream.of(
-            Arguments.of(new GameSession("eat", 2)),
-            Arguments.of(new GameSession("tea", 1))
+            Arguments.of(new GameSession(new OneWordDictionary("eat"), 2)),
+            Arguments.of(new GameSession(new OneWordDictionary("tea"), 1))
         );
     }
 
@@ -88,8 +88,8 @@ public class TestGameSession {
 
     private static Stream<Arguments> guess_ShouldReturnSuccessfulGuess() {
         return Stream.of(
-            Arguments.of(new GameSession("crab", 2), 'b'),
-            Arguments.of(new GameSession("rabbit", 4), 'i')
+            Arguments.of(new GameSession(new OneWordDictionary("crab"), 2), 'b'),
+            Arguments.of(new GameSession(new OneWordDictionary("rabbit"), 4), 'i')
         );
     }
 
@@ -101,14 +101,14 @@ public class TestGameSession {
 
     @Test
     void giveUp_ShouldReturnDefeat() {
-        GameSession gameSession = new GameSession("turtle", 3);
+        GameSession gameSession = new GameSession(new OneWordDictionary("turtle"), 3);
         assertThat(gameSession.giveUp()).isInstanceOf(GuessResult.Defeat.class);
     }
 
     private static Stream<Arguments> printWordBoard_ShouldNotThrowAnyExceptions() {
         return Stream.of(
-            Arguments.of(new GameSession("sheep", 1)),
-            Arguments.of(new GameSession("fox", 2))
+            Arguments.of(new GameSession(new OneWordDictionary("sheep"), 1)),
+            Arguments.of(new GameSession(new OneWordDictionary("fox"), 2))
         );
     }
 
@@ -132,8 +132,23 @@ public class TestGameSession {
     @MethodSource
     void constructor_ShouldThrowIllegalArgumentException(String hiddenWord, int maxAttempts) {
         assertThatThrownBy(
-            () -> new GameSession(hiddenWord, maxAttempts)
+            () -> new GameSession(new OneWordDictionary(hiddenWord), maxAttempts)
         ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    private static Stream<Arguments> getHiddenWord_ShouldReturnHiddenWord() {
+        return Stream.of(
+            Arguments.of("car"),
+            Arguments.of("bike"),
+            Arguments.of("bus")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void getHiddenWord_ShouldReturnHiddenWord(String word) {
+        GameSession gameSession = new GameSession(new OneWordDictionary(word), 4);
+        assertThat(gameSession.getHiddenWord()).isEqualTo(word);
     }
 
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class TestGuessResult {
@@ -54,5 +55,48 @@ public class TestGuessResult {
     void invalidGuess_ShouldNotThrowAnyExceptions(WordBoard wordBoard, int usedAttempts, int maxAttempts) {
         GuessResult guessResult = new GuessResult.InvalidGuess(wordBoard, usedAttempts, maxAttempts);
         assertDoesNotThrow(guessResult::message);
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("guessResultArgumentsExample")
+    void isTerminal_ShouldReturnTrueForDefeat(WordBoard wordBoard, int usedAttempts, int maxAttempts) {
+        GuessResult guessResult = new GuessResult.Defeat(wordBoard, usedAttempts, maxAttempts);
+        assertThat(guessResult.isTerminal()).isTrue();
+    }
+
+    @ParameterizedTest
+    @MethodSource("guessResultArgumentsExample")
+    void isTerminal_ShouldReturnTrueForWin(WordBoard wordBoard, int usedAttempts, int maxAttempts) {
+        GuessResult guessResult = new GuessResult.Win(wordBoard, usedAttempts, maxAttempts);
+        assertThat(guessResult.isTerminal()).isTrue();
+    }
+
+    @ParameterizedTest
+    @MethodSource("guessResultArgumentsExample")
+    void isTerminal_ShouldReturnFalseForSuccessfulGuess(WordBoard wordBoard, int usedAttempts, int maxAttempts) {
+        GuessResult guessResult = new GuessResult.SuccessfulGuess(wordBoard, usedAttempts, maxAttempts);
+        assertThat(guessResult.isTerminal()).isFalse();
+    }
+
+    @ParameterizedTest
+    @MethodSource("guessResultArgumentsExample")
+    void isTerminal_ShouldReturnFalseForFailedGuess(WordBoard wordBoard, int usedAttempts, int maxAttempts) {
+        GuessResult guessResult = new GuessResult.FailedGuess(wordBoard, usedAttempts, maxAttempts);
+        assertThat(guessResult.isTerminal()).isFalse();
+    }
+
+    @ParameterizedTest
+    @MethodSource("guessResultArgumentsExample")
+    void isTerminal_ShouldReturnFalseForAlreadyOpenedGuess(WordBoard wordBoard, int usedAttempts, int maxAttempts) {
+        GuessResult guessResult = new GuessResult.AlreadyOpenedGuess(wordBoard, usedAttempts, maxAttempts);
+        assertThat(guessResult.isTerminal()).isFalse();
+    }
+
+    @ParameterizedTest
+    @MethodSource("guessResultArgumentsExample")
+    void isTerminal_ShouldReturnFalseForInvalidGuess(WordBoard wordBoard, int usedAttempts, int maxAttempts) {
+        GuessResult guessResult = new GuessResult.InvalidGuess(wordBoard, usedAttempts, maxAttempts);
+        assertThat(guessResult.isTerminal()).isFalse();
     }
 }

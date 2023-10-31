@@ -4,24 +4,31 @@ import org.jetbrains.annotations.NotNull;
 
 public class GameSession {
 
-    private final static int MINIMUM_WORD_LENGTH = 3;
-
     private final WordBoard wordBoard;
+
+    private final String hiddenWord;
+
+    private final Dictionary dictionary;
 
     private final int maxAttempts;
     private int usedAttempts;
 
-    public GameSession(String hiddenWord, int maxAttempts) {
-        validateHiddenWord(hiddenWord);
+    public GameSession(Dictionary dictionary, int maxAttempts) {
+        this.dictionary = dictionary;
+        this.hiddenWord = dictionary.getRandomWord();
         validateMaxAttempts(maxAttempts);
         this.wordBoard = new WordBoard(hiddenWord);
         this.maxAttempts = maxAttempts;
         usedAttempts = 0;
     }
 
+    public String getHiddenWord() {
+        return this.hiddenWord;
+    }
+
     @NotNull
     public GuessResult guess(char guess) {
-        if (isNotValidLetter(guess)) {
+        if (dictionary.isNotValidLetter(guess)) {
             return new GuessResult.InvalidGuess(wordBoard, usedAttempts, maxAttempts);
         }
         if (wordBoard.isLetterOpened(guess)) {
@@ -37,10 +44,6 @@ public class GameSession {
 
     public void printWordBoard() {
         wordBoard.print();
-    }
-
-    private boolean isNotValidLetter(char guess) {
-        return guess < 'a' || guess > 'z';
     }
 
     @NotNull
@@ -62,19 +65,6 @@ public class GameSession {
     private void validateMaxAttempts(int maxAttempts) {
         if (maxAttempts <= 0) {
             throw new IllegalArgumentException("Number of max attempts must be positive");
-        }
-    }
-
-    private void validateHiddenWord(String hiddenWord) {
-        if (hiddenWord.length() < MINIMUM_WORD_LENGTH) {
-            throw new IllegalArgumentException(String.format(
-                "Given word %s is too short, word's length must be at least %d", hiddenWord, MINIMUM_WORD_LENGTH
-            ));
-        }
-        for (int i = 0; i < hiddenWord.length(); ++i) {
-            if (isNotValidLetter(hiddenWord.charAt(i))) {
-                throw new IllegalArgumentException("All letters in hidden word must be lowercase english letters");
-            }
         }
     }
 }
