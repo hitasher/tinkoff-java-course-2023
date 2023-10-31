@@ -12,6 +12,10 @@ public sealed interface GuessResult {
 
     @NotNull String message();
 
+    default boolean isTerminal() {
+        return this instanceof GuessResult.Win || this instanceof GuessResult.Defeat;
+    }
+
     record Defeat(WordBoard wordBoard, int usedAttempts, int maxAttempts) implements GuessResult {
         @Override
         public @NotNull String message() {

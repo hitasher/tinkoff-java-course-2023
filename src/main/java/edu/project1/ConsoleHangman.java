@@ -18,7 +18,7 @@ public class ConsoleHangman {
         System.out.println("The hangman game starts, guess the word by entering single lowercase english letters.");
         System.out.printf("Enter '%s' if you want to give up.%n", STOP_WORD);
 
-        while (!(guessResult instanceof GuessResult.Win) && !(guessResult instanceof GuessResult.Defeat)) {
+        while (guessResult == null || !guessResult.isTerminal()) {
             gameSession.printWordBoard();
             String input = inputLetterOrStopWord();
             if (input.equals(STOP_WORD)) {
