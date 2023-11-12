@@ -16,14 +16,6 @@ public final class Task7 {
     private final static Pattern PATTERN2 = Pattern.compile(REGEX2);
     private final static Pattern PATTERN3 = Pattern.compile(REGEX3);
 
-//    ^[01]([01]{2})*$
-//    ^(0([01]{2})*)|((1[01]([01]{2})*))$   ???
-//    ^(1*01*01*01*)+$
-//    ^(?!11).*|1[01]{3,}|110$
-//    ^(1[01]?)*$
-//    ^10{2,}|010+|00+1?0*$
-//    ^0*(10+)*|1$
-
     public static boolean subtask1(@NotNull String string) {
         Matcher matcher = PATTERN1.matcher(string);
         return matcher.matches();
