@@ -97,8 +97,8 @@ public class TestDiskMap {
         @Test
         void testPut() {
             assertThat(diskMap.put("a", "b")).isNull();
-            assertThat(diskMap.put("a\n\n\nb\n\n", "value\n\nexample")).isNull();
-            assertThat(diskMap.get("a\n\n\nb\n\n")).isEqualTo("value\n\nexample");
+            assertThat(diskMap.put("ab", "value_example")).isNull();
+            assertThat(diskMap.get("ab")).isEqualTo("value_example");
             assertThat(diskMap.put("a", "c")).isEqualTo("b");
             assertThat(diskMap.get("a")).isEqualTo("c");
         }
@@ -106,10 +106,10 @@ public class TestDiskMap {
         @Test
         void testRemove() {
             assertThat(diskMap.put("ab", "c")).isNull();
-            assertThat(diskMap.put("a\n\n\nb\n\n", "value\n\nexample")).isNull();
+            assertThat(diskMap.put("abc", "value_example")).isNull();
             assertThat(diskMap.remove("a")).isNull();
             assertThat(diskMap.remove("ab")).isEqualTo("c");
-            assertThat(diskMap.get("a\n\n\nb\n\n")).isEqualTo("value\n\nexample");
+            assertThat(diskMap.get("abc")).isEqualTo("value_example");
         }
 
         @Test

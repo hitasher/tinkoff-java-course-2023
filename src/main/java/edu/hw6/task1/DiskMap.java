@@ -8,17 +8,17 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DiskMap implements Map<String, String> {
 
+    private static final String DELIMITER = ":";
     private final Path path;
 
     public DiskMap(@NotNull Path path) {
@@ -32,18 +32,11 @@ public class DiskMap implements Map<String, String> {
 
     @Override
     public int size() {
-        int counter = 0;
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path.toFile()))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                readBlock(bufferedReader, line);
-                readBlock(bufferedReader, bufferedReader.readLine());
-                ++counter;
-            }
+        try {
+            return Files.readAllLines(path).size();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return counter;
     }
 
     @Override
@@ -57,53 +50,34 @@ public class DiskMap implements Map<String, String> {
 
     @Override
     public boolean containsKey(Object key) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path.toFile()))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                String blockKey = readBlock(bufferedReader, line);
-                if (blockKey.equals(key)) {
-                    return true;
-                }
-                readBlock(bufferedReader, bufferedReader.readLine());
-            }
+        try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
+            return lines.anyMatch(line -> line.split(DELIMITER)[0].equals(key));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return false;
     }
 
     @Override
     public boolean containsValue(Object value) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path.toFile()))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                readBlock(bufferedReader, line);
-                String blockValue = readBlock(bufferedReader, bufferedReader.readLine());
-                if (blockValue.equals(value)) {
-                    return true;
-                }
-            }
+        try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
+            return lines.anyMatch(line -> line.split(DELIMITER)[1].equals(value));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return false;
     }
 
     @Override
     public String get(Object key) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path.toFile()))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                String blockKey = readBlock(bufferedReader, line);
-                String blockValue = readBlock(bufferedReader, bufferedReader.readLine());
-                if (blockKey.equals(key)) {
-                    return blockValue;
-                }
-            }
+        try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
+            return lines
+                .map(line -> line.split(DELIMITER))
+                .filter(pair -> pair.length > 1 && pair[0].equals(key))
+                .findFirst()
+                .map(pair -> pair[1])
+                .orElse(null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return null;
     }
 
     @Nullable
@@ -113,18 +87,12 @@ public class DiskMap implements Map<String, String> {
         if (oldValue != null) {
             remove(key);
         }
-        long keySize = key.lines().count();
-        if (key.endsWith("\n")) {
-            ++keySize;
+        String line = key + DELIMITER + value + "\n";
+        try {
+            Files.writeString(path, line, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        writeLineToTheEndOfFile(String.valueOf(keySize));
-        writeLineToTheEndOfFile(key);
-        long valueSize = value.lines().count();
-        if (value.endsWith("\n")) {
-            ++valueSize;
-        }
-        writeLineToTheEndOfFile(String.valueOf(valueSize));
-        writeLineToTheEndOfFile(value);
         return oldValue;
     }
 
@@ -159,65 +127,40 @@ public class DiskMap implements Map<String, String> {
     @NotNull
     @Override
     public Set<String> keySet() {
-        Set<String> keys = new HashSet<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path.toFile()))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                keys.add(readBlock(bufferedReader, line));
-                readBlock(bufferedReader, bufferedReader.readLine());
-            }
+        try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
+            return lines
+                .map(line -> line.split(DELIMITER))
+                .filter(pair -> pair.length > 0)
+                .map(pair -> pair[0])
+                .collect(Collectors.toSet());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return keys;
     }
 
     @NotNull
     @Override
     public Collection<String> values() {
-        List<String> values = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path.toFile()))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                readBlock(bufferedReader, line);
-                values.add(readBlock(bufferedReader, bufferedReader.readLine()));
-            }
+        try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
+            return lines
+                .map(line -> line.split(DELIMITER))
+                .filter(pair -> pair.length > 1)
+                .map(pair -> pair[1])
+                .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return values;
     }
 
     @NotNull
     @Override
     public Set<Entry<String, String>> entrySet() {
-        Set<Entry<String, String>> entries = new HashSet<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path.toFile()))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                String key = readBlock(bufferedReader, line);
-                String value = readBlock(bufferedReader, bufferedReader.readLine());
-                entries.add(Map.entry(key, value));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return entries;
-    }
-
-    private String readBlock(BufferedReader bufferedReader, String line) throws IOException {
-        long blockSize = Long.parseLong(line);
-        StringBuilder blockBuilder = new StringBuilder();
-        for (int i = 0; i < blockSize - 1; ++i) {
-            blockBuilder.append(bufferedReader.readLine()).append('\n');
-        }
-        blockBuilder.append(bufferedReader.readLine());
-        return blockBuilder.toString();
-    }
-
-    private void writeLineToTheEndOfFile(@NotNull String string) {
-        try {
-            Files.writeString(path, string + "\n", StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+        try (Stream<String> lines = Files.lines(path, StandardCharsets.UTF_8)) {
+            return lines
+                .map(line -> line.split(DELIMITER))
+                .filter(pair -> pair.length > 1)
+                .map(pair -> Map.entry(pair[0], pair[1]))
+                .collect(Collectors.toSet());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
