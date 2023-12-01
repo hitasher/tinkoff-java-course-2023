@@ -15,6 +15,6 @@ public final class Task3 {
         Objects.requireNonNull(animalList);
 
         return animalList.stream()
-            .collect(Collectors.groupingByConcurrent(Animal::type, Collectors.summingInt(x -> 1)));
+            .collect(Collectors.groupingBy(Animal::type, Collectors.summingInt(x -> 1)));
     }
 }
