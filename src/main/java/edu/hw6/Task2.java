@@ -13,8 +13,9 @@ public final class Task2 {
     public static void cloneFile(Path path) throws IOException {
         String directory = path.getParent().toString();
         String fileName = path.getFileName().toString();
-        String extension = fileName.substring(fileName.lastIndexOf('.'));
-        String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        int startExtensionIndex = fileName.lastIndexOf('.');
+        String extension = fileName.substring(startExtensionIndex);
+        String fileNameWithoutExtension = fileName.substring(0, startExtensionIndex);
 
         Path pathOfClonedFile = Paths.get(directory, fileNameWithoutExtension + " - копия" + extension);
         int counter = 2;
