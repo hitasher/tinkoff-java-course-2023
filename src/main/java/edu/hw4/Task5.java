@@ -17,7 +17,7 @@ public final class Task5 {
         Objects.requireNonNull(animalList);
 
         Supplier<Stream<Entry<Animal.Sex, Integer>>> supplier = () -> animalList.stream()
-            .collect(Collectors.groupingByConcurrent(Animal::sex, Collectors.summingInt(x -> 1)))
+            .collect(Collectors.groupingBy(Animal::sex, Collectors.summingInt(x -> 1)))
             .entrySet()
             .stream();
 
