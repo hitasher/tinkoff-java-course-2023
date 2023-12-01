@@ -27,8 +27,8 @@ public final class DateParser {
     @NotNull
     public static Optional<LocalDate> parseDate(@NotNull String date) {
         return HANDLERS.stream()
-            .filter(handler -> handler.handle(date).isPresent())
-            .findFirst()
-            .flatMap(first -> first.handle(date));
+            .map(handler -> handler.handle(date))
+            .flatMap(Optional::stream)
+            .findFirst();
     }
 }
