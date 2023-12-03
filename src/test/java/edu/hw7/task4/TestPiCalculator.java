@@ -24,7 +24,5 @@ public class TestPiCalculator {
         throws ExecutionException, InterruptedException {
         double calculatedPi = PiCalculator.calculatePiInParallel(numberOfIterations, numberOfThreads);
         assertThat(calculatedPi).isCloseTo(Math.PI, OFFSET);
-        System.out.println(calculatedPi);
-        System.out.println(Math.abs(calculatedPi - Math.PI) / Math.PI * 100);
     }
 }
