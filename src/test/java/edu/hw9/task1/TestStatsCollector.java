@@ -31,7 +31,7 @@ public class TestStatsCollector {
         executorService.submit(() -> collector.push("b", 3829, 83298, 938289, 1389, 3298));
         executorService.submit(() -> collector.push("c", 0.398198, 0.389198, 0.03289839, 0.382904234, 0.3892984932));
         List<Metric> actualStats = collector.stats();
-        Thread.sleep(1);
+        Thread.sleep(100);
         executorService.shutdown();
         Assertions.assertThat(actualStats).containsExactlyInAnyOrder(
             new Metric("a", 6.859999999999999, 1.3719999999999999, 0.01, 5.1),
