@@ -53,8 +53,6 @@ public class MultiThreadDepthFirstSolver implements Solver {
 
         @Override
         protected List<Coordinate> compute() {
-            // Not needed to synchronize with visitedCells or maze, because maze is ideal
-            // i.e. We have only one path from start to end, and we will not produce cell crossing
             visitedCells[start.rowIndex()][start.columnIndex()] = true;
             List<Coordinate> coordinates = new ArrayList<>();
             if (start.equals(end)) {
