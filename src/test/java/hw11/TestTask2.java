@@ -26,7 +26,7 @@ public class TestTask2 {
     }
 
     private static final class Delegate {
-        public static int sum(int a, int b) {
+        public static int mul(int a, int b) {
             return a * b;
         }
     }
