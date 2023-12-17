@@ -14,15 +14,18 @@ public class TestTask2 {
     @SneakyThrows
     public void testBehaviourChange() {
         ByteBuddyAgent.install();
+        reload();
+        int actualSum = ArithmeticUtils.sum(1, 1);
+        assertThat(actualSum).isEqualTo(1);
+    }
+
+    public static void reload() {
         new ByteBuddy()
             .redefine(ArithmeticUtils.class)
             .method(ElementMatchers.named("sum"))
             .intercept(MethodDelegation.to(Delegate.class))
             .make()
-            .load(ClassLoader.getSystemClassLoader(), ClassReloadingStrategy.fromInstalledAgent())
-            .getLoaded();
-        int actualSum = ArithmeticUtils.sum(1, 1);
-        assertThat(actualSum).isEqualTo(1);
+            .load(ArithmeticUtils.class.getClassLoader(), ClassReloadingStrategy.fromInstalledAgent());
     }
 
     private static final class Delegate {
